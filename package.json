@@ -1,0 +1,22 @@
+{
+  "name": "soft-video-lamprey",
+  "version": "0.1.0",
+  "description": "The goal of this software is to allow users to view the hdmi stream of a source through a video capture card without necessarily having an hdmi chip on their device.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HaDock404/soft-video-lamprey.git"
+  },
+  "author": "haDock404",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HaDock404/soft-video-lamprey/issues"
+  },
+  "homepage": "https://github.com/HaDock404/soft-video-lamprey#readme",
+  "devDependencies": {
+    "electron": "^33.2.1"
+  }
+}
