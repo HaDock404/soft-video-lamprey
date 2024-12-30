@@ -7,6 +7,7 @@ const createWindow = () => {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
+        frame: false, // Supprime la barre supérieure
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
         },
