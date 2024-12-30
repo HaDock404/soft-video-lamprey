@@ -4,6 +4,9 @@
   "description": "The goal of this software is to allow users to view the hdmi stream of a source through a video capture card without necessarily having an hdmi chip on their device.",
   "main": "main.js",
   "scripts": {
+    "start": "electron .",
+    "build-react": "cd frontend && npm run build",
+    "start-react": "cd frontend && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
