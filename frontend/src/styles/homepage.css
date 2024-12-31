@@ -9,3 +9,33 @@
     align-items: center;
     color: white;
 }
+
+.welcome_article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.welcome_title {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.welcome_text {
+    margin-bottom: 25px;
+}
+
+.welcome_button {
+    text-decoration: none;
+    background-color: #0025aa;
+    font-weight: bold;
+    font-size: 16px;
+    color: #141827;
+    padding: 10px 30px;
+    border-radius: 10px;
+}
+
+.welcome_button:hover {
+    background-color: #002096;
+}

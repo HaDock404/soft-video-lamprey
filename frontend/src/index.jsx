@@ -10,8 +10,8 @@ import './styles/normalize.css'
 import GlobalStyle from './styles/createGlobalStyle.jsx'
 import ScrollToTop from "./styles/ScrollToTop";
 
-import App from './pages/App';
 import HomePage from './pages/HomePage.jsx'
+import VideoPage from './pages/VideoPage.jsx'
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -20,6 +20,7 @@ root.render(
     <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />}/>
+          <Route path="/video" element={<VideoPage />}/>
         </Routes>
     <React.StrictMode></React.StrictMode>
   </HashRouter>,
