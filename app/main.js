@@ -14,7 +14,7 @@ const createWindow = () => {
     });
 
     // Chargez l'application React
-    const startUrl = `file://${path.join(__dirname, 'frontend', 'build', 'index.html')}`;
+    const startUrl = `file://${path.join(__dirname, '..', 'frontend', 'build', 'index.html')}`;
     console.log('Loading URL:', startUrl);
 
     mainWindow.loadURL(startUrl);

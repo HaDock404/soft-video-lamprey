@@ -2,7 +2,7 @@
   "name": "soft-video-lamprey",
   "version": "0.1.0",
   "description": "The goal of this software is to allow users to view the hdmi stream of a source through a video capture card without necessarily having an hdmi chip on their device.",
-  "main": "main.js",
+  "main": "app/main.js",
   "scripts": {
     "start": "electron .",
     "build-react": "cd frontend && npm run build",
