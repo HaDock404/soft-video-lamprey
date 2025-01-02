@@ -1,19 +1,30 @@
+import cv2
+import base64
 import sys
-import numpy as np
+import json
 
+def send_frame_to_electron(frame):
+    _, buffer = cv2.imencode('.jpg', frame)
+    frame_base64 = base64.b64encode(buffer).decode('utf-8')
+    message = json.dumps({"type": "frame", "data": frame_base64})
+    print(message, flush=True)  # Assurez-vous que chaque message est suivi d'une nouvelle ligne
 
-def main():
-    if len(sys.argv) != 2:
-        print("Usage: python app.py <number>")
-        return
+video_device_index = 0
 
-    try:
-        num = float(sys.argv[1])
-        result = np.square(num)
-        print(result)
-    except ValueError:
-        print("Veuillez entrer un nombre valide.")
+cap = cv2.VideoCapture(video_device_index)
 
+if not cap.isOpened():
+    error_message = json.dumps({"type": "error", "data": "Impossible d'accéder à la carte de capture vidéo."})
+    print(error_message, flush=True)
+    exit()
 
-if __name__ == "__main__":
-    main()
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        error_message = json.dumps({"type": "error", "data": "Impossible de lire la vidéo."})
+        print(error_message, flush=True)
+        break
+
+    send_frame_to_electron(frame)
+
+cap.release()

@@ -37,20 +37,43 @@ const createWindow = () => {
     });
 };
 
-ipcMain.on('run-python', (event, input) => {
-    const pythonPath = path.join(__dirname, '..', 'python_env', 'bin', 'python');
-    const pythonScript = path.join(__dirname, '..', 'python', 'script.py');
+ipcMain.on('start-video', (event) => {
+  const pythonPath = path.join(__dirname, '..', 'python_env', 'bin', 'python');
+  const pythonScript = path.join(__dirname, '..', 'python', 'script.py');
 
-    const pythonProcess = spawn(pythonPath, [pythonScript, input]);
+  const pythonProcess = spawn(pythonPath, [pythonScript]);
 
-    pythonProcess.stdout.on('data', (data) => {
-        event.reply('python-output', data.toString());
-      });
-    
-    pythonProcess.stderr.on('data', (data) => {
-        console.error(`Python Error: ${data}`);
-        event.reply('python-error', data.toString());
-    });
+  let buffer = '';
+
+  pythonProcess.stdout.on('data', (data) => {
+    buffer += data.toString(); // Accumuler les données reçues
+
+    let newlineIndex;
+    while ((newlineIndex = buffer.indexOf('\n')) > -1) {
+      const message = buffer.slice(0, newlineIndex); // Extraire le message complet
+      buffer = buffer.slice(newlineIndex + 1); // Supprimer le message traité
+
+      try {
+        const parsedMessage = JSON.parse(message); // Parse du JSON
+        if (parsedMessage.type === 'frame') {
+          event.sender.send('video-frame', parsedMessage.data);
+        } else if (parsedMessage.type === 'error') {
+          console.error('Python error:', parsedMessage.data);
+          event.sender.send('video-error', parsedMessage.data);
+        }
+      } catch (err) {
+        console.error('Failed to parse message:', err);
+      }
+    }
+  });
+
+  pythonProcess.stderr.on('data', (data) => {
+    console.error('Python stderr:', data.toString());
+  });
+
+  pythonProcess.on('exit', (code) => {
+    console.log('Python process exited with code:', code);
+  });
 });
 
 app.whenReady().then(createWindow);

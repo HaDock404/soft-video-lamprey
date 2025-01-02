@@ -1,41 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 function App() {
-  const [input, setInput] = useState(''); // Gère l'entrée utilisateur
-  const [result, setResult] = useState(''); // Gère le résultat ou les erreurs
+  const canvasRef = useRef(null);
 
   useEffect(() => {
-    // Écoute des réponses du backend
-    window.electron.receive('python-output', (data) => {
-      setResult(`Résultat : ${data}`);
+    window.electron.send('start-video');
+
+    window.electron.receive('video-frame', (frameBase64) => {
+      const canvas = canvasRef.current;
+      const context = canvas.getContext('2d');
+      const img = new Image();
+      img.src = `data:image/jpeg;base64,${frameBase64}`;
+      img.onload = () => {
+        context.drawImage(img, 0, 0, canvas.width, canvas.height);
+      };
     });
 
-    window.electron.receive('python-error', (error) => {
-      setResult(`Erreur : ${error}`);
+    window.electron.receive('video-error', (error) => {
+      console.error('Erreur vidéo:', error);
     });
-
-    // Nettoyage des listeners lorsque le composant est démonté
-    return () => {
-      window.electron.receive('python-output', () => {});
-      window.electron.receive('python-error', () => {});
-    };
   }, []);
-
-  const handleCalculate = () => {
-    window.electron.send('run-python', input);
-  };
 
   return (
     <div>
-      <h1>Calculateur avec Python</h1>
-      <input
-        type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Entrez une valeur"
-      />
-      <button onClick={handleCalculate}>Calculer</button>
-      <p id="result">{result}</p>
+      <h1>Flux vidéo</h1>
+      <canvas ref={canvasRef} width="640" height="480"></canvas>
     </div>
   );
 }
