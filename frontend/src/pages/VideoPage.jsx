@@ -1,5 +1,6 @@
 import '../styles/videopage.css'
 import HouseIcon from '../components/HouseIcon.jsx'
+import Test from '../components/Test.jsx'
 import { Link } from 'react-router-dom'
 
 function VideoPage() {
@@ -9,7 +10,7 @@ function VideoPage() {
                 <HouseIcon />
                 Home
             </Link>
-            Welcome in video Page
+            <Test />
         </section>
     )
 }

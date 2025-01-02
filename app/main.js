@@ -1,5 +1,6 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const { spawn } = require('child_process');
 
 let mainWindow;
 
@@ -35,6 +36,22 @@ const createWindow = () => {
         console.log(`Console message [${level}]: ${message}`);
     });
 };
+
+ipcMain.on('run-python', (event, input) => {
+    const pythonPath = path.join(__dirname, '..', 'python_env', 'bin', 'python');
+    const pythonScript = path.join(__dirname, '..', 'python', 'script.py');
+
+    const pythonProcess = spawn(pythonPath, [pythonScript, input]);
+
+    pythonProcess.stdout.on('data', (data) => {
+        event.reply('python-output', data.toString());
+      });
+    
+    pythonProcess.stderr.on('data', (data) => {
+        console.error(`Python Error: ${data}`);
+        event.reply('python-error', data.toString());
+    });
+});
 
 app.whenReady().then(createWindow);
 
