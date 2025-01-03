@@ -24,7 +24,7 @@ function App() {
   return (
     <div>
       <h1>Flux vidéo</h1>
-      <canvas ref={canvasRef} width="640" height="480"></canvas>
+      <canvas ref={canvasRef} width="640" height="360"></canvas>
     </div>
   );
 }

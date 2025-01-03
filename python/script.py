@@ -3,11 +3,14 @@ import base64
 import sys
 import json
 
+
 def send_frame_to_electron(frame):
-    _, buffer = cv2.imencode('.jpg', frame)
+    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 95]
+    _, buffer = cv2.imencode('.jpg', frame, encode_param)
     frame_base64 = base64.b64encode(buffer).decode('utf-8')
     message = json.dumps({"type": "frame", "data": frame_base64})
     print(message, flush=True)  # Assurez-vous que chaque message est suivi d'une nouvelle ligne
+
 
 video_device_index = 0
 
